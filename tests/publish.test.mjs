@@ -24,6 +24,13 @@ test('the CCDemos hub links to the published PinPics experience', async () => {
   assert.match(html, /PinPics Modernization Concept/);
 });
 
+test('the CCDemos hub declares a favicon that resolves inside the publication', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const favicon = html.match(/<link rel="icon" href="(\.\/[^"]+)"/);
+  assert.ok(favicon, 'hub favicon link is missing');
+  await access(resolve(root, favicon[1]));
+});
+
 test('the PinPics publication includes every approved page and runtime asset', async () => {
   await access(resolve(root, '.nojekyll'));
   await Promise.all([
